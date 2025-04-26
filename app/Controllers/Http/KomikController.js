@@ -1,53 +1,53 @@
 'use strict'
 
-const Komik = use('App/Models/Komik')
+const Komik = use('App/Models/Komik') // Import model Komik
 
 class KomikController {
-  // Tampilkan halaman daftar komik
+  // Menampilkan halaman daftar semua komik
   async index ({ view }) {
-    const komiks = await Komik.all()
-    return view.render('komik.index', { komiks: komiks.toJSON() })
+    const komiks = await Komik.all() // Ambil semua data komik dari database
+    return view.render('komik.index', { komiks: komiks.toJSON() }) // Render ke view dengan data komik
   }
   
-  // API untuk mendapatkan semua komik
+  // API untuk mendapatkan semua komik dalam format JSON
   async getAll ({ response }) {
-    const komiks = await Komik.all()
+    const komiks = await Komik.all() // Ambil semua data komik
     return response.status(200).json({
-      data: komiks
+      data: komiks // Return data dalam format JSON
     })
   }
   
   // API untuk mendapatkan satu komik berdasarkan ID
   async getOne ({ params, response }) {
     try {
-      const komik = await Komik.findOrFail(params.id)
+      const komik = await Komik.findOrFail(params.id) // Cari komik berdasarkan ID, error kalau tidak ketemu
       return response.status(200).json({
         data: komik
       })
     } catch (error) {
-      return response.status(404).json({
+      return response.status(404).json({ // Kalau tidak ketemu, kirim status 404
         message: 'Komik tidak ditemukan',
         id: params.id
       })
     }
   }
   
-  // Tampilkan form untuk membuat komik baru
+  // Menampilkan form untuk membuat komik baru
   async create ({ view }) {
-    return view.render('komik.create')
+    return view.render('komik.create') // Render form create komik
   }
   
-  // API untuk menyimpan komik baru
+  // Menyimpan komik baru ke database (bisa dari API atau form biasa)
   async store ({ request, response, session }) {
     const komikData = request.only([
       'judul', 'penulis', 'penerbit', 'tahun_terbit', 
-      'sinopsis', 'jumlah_halaman', 'genre'
+      'sinopsis', 'jumlah_halaman', 'genre' // Ambil hanya field yang diperlukan dari request
     ])
     
     try {
-      const komik = await Komik.create(komikData)
+      const komik = await Komik.create(komikData) // Simpan data baru ke database
       
-      // Jika request ingin JSON response (dari API)
+      // Cek tipe response yang diminta, jika JSON (API)
       if (request.accepts(['html', 'json']) === 'json') {
         return response.status(201).json({
           message: 'Komik berhasil ditambahkan',
@@ -55,36 +55,36 @@ class KomikController {
         })
       }
       
-      // Jika request dari form browser
+      // Jika request dari form biasa (browser)
       session.flash({ notification: 'Komik berhasil ditambahkan!' })
       return response.redirect('/komik')
     } catch (error) {
-      return response.status(400).json({
+      return response.status(400).json({ // Error handling jika gagal create
         message: 'Gagal menambahkan komik',
         error: error.message
       })
     }
   }
   
-  // Tampilkan form edit komik
+  // Menampilkan form edit komik
   async edit ({ params, view }) {
-    const komik = await Komik.find(params.id)
-    return view.render('komik.edit', { komik: komik.toJSON() })
+    const komik = await Komik.find(params.id) // Cari komik berdasarkan ID (tidak pakai findOrFail, hati-hati kalau data tidak ada)
+    return view.render('komik.edit', { komik: komik.toJSON() }) // Render form edit dengan data komik
   }
   
-  // API untuk memperbarui data komik
+  // Memperbarui data komik (baik dari API atau form browser)
   async update ({ params, request, response, session }) {
     try {
-      const komik = await Komik.findOrFail(params.id)
+      const komik = await Komik.findOrFail(params.id) // Cari komik, error kalau tidak ketemu
       const komikData = request.only([
         'judul', 'penulis', 'penerbit', 'tahun_terbit', 
-        'sinopsis', 'jumlah_halaman', 'genre'
+        'sinopsis', 'jumlah_halaman', 'genre' // Ambil field yang diperlukan dari request
       ])
       
-      komik.merge(komikData)
-      await komik.save()
+      komik.merge(komikData) // Gabungkan data baru ke dalam model lama
+      await komik.save() // Simpan perubahan ke database
       
-      // Jika request ingin JSON response (dari API)
+      // Cek tipe response yang diminta
       if (request.accepts(['html', 'json']) === 'json') {
         return response.status(200).json({
           message: 'Komik berhasil diperbarui',
@@ -92,27 +92,27 @@ class KomikController {
         })
       }
       
-      // Jika request dari form browser
+      // Jika dari browser
       session.flash({ notification: 'Komik berhasil diperbarui!' })
       return response.redirect('/komik')
     } catch (error) {
-      return response.status(404).json({
+      return response.status(404).json({ // Jika komik tidak ditemukan
         message: 'Komik tidak ditemukan',
         id: params.id
       })
     }
   }
   
-  // API untuk menghapus komik
+  // Menghapus komik dari database
   async destroy ({ params, response, session }) {
     try {
-      const komik = await Komik.findOrFail(params.id)
-      await komik.delete()
+      const komik = await Komik.findOrFail(params.id) // Cari komik berdasarkan ID
+      await komik.delete() // Hapus dari database
       
-      session.flash({ notification: 'Komik berhasil dihapus!' })
-      return response.redirect('/komik')
+      session.flash({ notification: 'Komik berhasil dihapus!' }) // Berikan notifikasi sukses
+      return response.redirect('/komik') // Redirect ke daftar komik
     } catch (error) {
-      return response.status(404).json({
+      return response.status(404).json({ // Jika komik tidak ditemukan
         message: 'Komik tidak ditemukan',
         id: params.id
       })
@@ -120,4 +120,4 @@ class KomikController {
   }
 }
 
-module.exports = KomikController
+module.exports = KomikController // Export controller supaya bisa digunakan di routes
