@@ -1,0 +1,49 @@
+@layout('layout.main')
+
+@section('content')
+  <h2>Edit Komik</h2>
+  
+  <form action="/komik/{{ komik.id }}?_method=PUT" method="POST">
+    {{ csrfField() }}
+    
+    <div class="mb-3">
+      <label for="judul" class="form-label">Judul</label>
+      <input type="text" class="form-control" id="judul" name="judul" value="{{ komik.judul }}" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="penulis" class="form-label">Penulis</label>
+      <input type="text" class="form-control" id="penulis" name="penulis" value="{{ komik.penulis }}" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="penerbit" class="form-label">Penerbit</label>
+      <input type="text" class="form-control" id="penerbit" name="penerbit" value="{{ komik.penerbit }}" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="tahun_terbit" class="form-label">Tahun Terbit</label>
+      <input type="number" class="form-control" id="tahun_terbit" name="tahun_terbit" value="{{ komik.tahun_terbit }}" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="genre" class="form-label">Genre</label>
+      <input type="text" class="form-control" id="genre" name="genre" value="{{ komik.genre }}">
+    </div>
+    
+    <div class="mb-3">
+      <label for="jumlah_halaman" class="form-label">Jumlah Halaman</label>
+      <input type="number" class="form-control" id="jumlah_halaman" name="jumlah_halaman" value="{{ komik.jumlah_halaman }}">
+    </div>
+    
+    <div class="mb-3">
+      <label for="sinopsis" class="form-label">Sinopsis</label>
+      <textarea class="form-control" id="sinopsis" name="sinopsis" rows="4">{{ komik.sinopsis }}</textarea>
+    </div>
+    
+    <div class="mb-3">
+      <button type="submit" class="btn btn-primary">Update</button>
+      <a href="/komik" class="btn btn-secondary">Batal</a>
+    </div>
+  </form>
+@endsection

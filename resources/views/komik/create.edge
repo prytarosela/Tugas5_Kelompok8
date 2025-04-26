@@ -1,0 +1,49 @@
+@layout('layout.main')
+
+@section('content')
+  <h2>Tambah Komik Baru</h2>
+  
+  <form action="/komik" method="POST">
+    {{ csrfField() }}
+    
+    <div class="mb-3">
+      <label for="judul" class="form-label">Judul</label>
+      <input type="text" class="form-control" id="judul" name="judul" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="penulis" class="form-label">Penulis</label>
+      <input type="text" class="form-control" id="penulis" name="penulis" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="penerbit" class="form-label">Penerbit</label>
+      <input type="text" class="form-control" id="penerbit" name="penerbit" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="tahun_terbit" class="form-label">Tahun Terbit</label>
+      <input type="number" class="form-control" id="tahun_terbit" name="tahun_terbit" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="genre" class="form-label">Genre</label>
+      <input type="text" class="form-control" id="genre" name="genre">
+    </div>
+    
+    <div class="mb-3">
+      <label for="jumlah_halaman" class="form-label">Jumlah Halaman</label>
+      <input type="number" class="form-control" id="jumlah_halaman" name="jumlah_halaman">
+    </div>
+    
+    <div class="mb-3">
+      <label for="sinopsis" class="form-label">Sinopsis</label>
+      <textarea class="form-control" id="sinopsis" name="sinopsis" rows="4"></textarea>
+    </div>
+    
+    <div class="mb-3">
+      <button type="submit" class="btn btn-primary">Simpan</button>
+      <a href="/komik" class="btn btn-secondary">Batal</a>
+    </div>
+  </form>
+@endsection
