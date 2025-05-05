@@ -38,8 +38,8 @@ Repositori ini berisi sistem Manajemen Komik sederhana yang dibangun dengan Adon
 
 1. Clone repositori ini:
    ```bash
-   git clone https://github.com/username-anda/adonis-komik-api.git
-   cd adonis-komik-api
+   git clone https://github.com/prytarosela/Tugas5_Kelompok8.git
+   cd Tugas5_Kelompok8
    ```
 
 2. Instal dependensi:
